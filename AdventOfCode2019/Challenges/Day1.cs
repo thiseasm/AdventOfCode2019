@@ -14,8 +14,7 @@ namespace AdventOfCode2019.Challenges
         }
         private void CalculateFuel()
         {
-            var inputPath = Path.Combine(Properties.Resources.InputsFolder, "Day1.txt");
-            var moduleWeights = ReadFile(inputPath);
+            var moduleWeights = ReadFile("Day1.txt");
             var fuelNeededForModules = 0;
             var additionalFuelNeeded = 0;
 
