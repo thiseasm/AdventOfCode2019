@@ -23,6 +23,8 @@ namespace AdventOfCode2019
             {
                 case 1:
                     return new Day1();
+                case 2:
+                    return new Day2();
                 default:
                     return new Day1();
             }
