@@ -14,7 +14,7 @@ namespace AdventOfCode2019.Challenges
         }
         private void CalculateFuel()
         {
-            var moduleWeights = ReadFile("Day1.txt");
+            var moduleWeights = ReadFileToArray("Day1.txt");
             var fuelNeededForModules = 0;
             var additionalFuelNeeded = 0;
 

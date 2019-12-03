@@ -9,7 +9,12 @@ namespace AdventOfCode2019.Challenges
     {
         public abstract void Start();
 
-        protected int[] ReadFile(string file)
+        protected string[] ReadFile(string file)
+        {
+            var inputPath = Path.Combine(Properties.Resources.InputsFolder, file);
+            return File.ReadAllLines(inputPath);
+        }
+        protected int[] ReadFileToArray(string file)
         {
             var inputPath = Path.Combine(Properties.Resources.InputsFolder, file);
             var inputsRaw = File.ReadAllLines(inputPath);
