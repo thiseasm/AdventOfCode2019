@@ -18,16 +18,14 @@ namespace AdventOfCode2019
         }
         private static Day CalculateDay()
         {
-            var Date = DateTime.Now.Day;
-            switch (Date)
+            var Date = 3;
+            return Date switch
             {
-                case 1:
-                    return new Day1();
-                case 2:
-                    return new Day2();
-                default:
-                    return new Day1();
-            }
+                1 => new Day1(),
+                2 => new Day2(),
+                3 => new Day3(),
+                _ => new Day1(),
+            };
         }
     }
 }
