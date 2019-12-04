@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace AdventOfCode2019.Challenges
@@ -18,28 +19,24 @@ namespace AdventOfCode2019.Challenges
         {
             var inputPath = Path.Combine(Properties.Resources.InputsFolder, file);
             var inputsRaw = File.ReadAllLines(inputPath);
-            var result = new List<int>();
 
-            foreach (var input in inputsRaw)
-            {
-                result.Add(int.Parse(input.Trim()));
-            }
-
-            return result.ToArray();
+            return inputsRaw.Select(input => int.Parse(input.Trim())).ToArray();
         }
 
-        protected int[] ReadCSV(string file)
+        protected int[] ReadCsv(string file)
         {
             var inputPath = Path.Combine(Properties.Resources.InputsFolder, file);
             var inputRaw = File.ReadAllText(inputPath).Split(",");
-            var result = new List<int>();
 
-            foreach (var input in inputRaw)
-            {
-                result.Add(int.Parse(input.Trim()));
-            }
+            return inputRaw.Select(input => int.Parse(input.Trim())).ToArray();
+        }
 
-            return result.ToArray();
+        protected int[] ReadSv(string file, char separator)
+        {
+            var inputPath = Path.Combine(Properties.Resources.InputsFolder, file);
+            var inputRaw = File.ReadAllText(inputPath).Split(separator);
+
+            return inputRaw.Select(input => int.Parse(input.Trim())).ToArray();
         }
     }
 }

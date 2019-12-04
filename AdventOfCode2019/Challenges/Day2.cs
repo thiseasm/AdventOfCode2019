@@ -12,7 +12,7 @@ namespace AdventOfCode2019.Challenges
 
         private void RestoreGravityAssist()
         {
-            var opCode = ReadCSV("Day2.txt");
+            var opCode = ReadCsv("Day2.txt");
             opCode[1] = 12;
             opCode[2] = 2;
 
@@ -29,7 +29,7 @@ namespace AdventOfCode2019.Challenges
             {
                 for (var verb = 0; verb <= 99; verb++)
                 {
-                    var opCode = ReadCSV("Day2.txt");
+                    var opCode = ReadCsv("Day2.txt");
                     opCode[1] = noun;
                     opCode[2] = verb;
                     result = FeedIntComputer(opCode);

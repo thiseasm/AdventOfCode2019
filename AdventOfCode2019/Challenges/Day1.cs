@@ -6,7 +6,7 @@ using System.IO;
 
 namespace AdventOfCode2019.Challenges
 {
-    class Day1 : Day
+    public class Day1 : Day
     {
         public override void Start()
         {
