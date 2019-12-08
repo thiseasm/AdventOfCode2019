@@ -18,13 +18,15 @@ namespace AdventOfCode2019
         }
         private static Day CalculateDay()
         {
-            var Date = 3;
-            return Date switch
+            var date = 5;
+            return date switch
             {
-                1 => new Day1(),
+                1 => (Day) new Day1(),
                 2 => new Day2(),
                 3 => new Day3(),
-                _ => new Day1(),
+                4 => new Day4(),
+                5 => new Day5(),
+                _ => new Day1()
             };
         }
     }

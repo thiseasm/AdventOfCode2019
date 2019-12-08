@@ -8,12 +8,16 @@ namespace AdventOfCode2019.Challenges
         private static IntComputer _computer = IntComputer.Instance;
         public override void Start()
         {
-            RunDiagnosticForTEST();
+            var opCode = ReadCsv("Day5.txt");
+            // TEST needs input 1
+            RunDiagnosticForTEST(opCode);
+            // Thermal radiators require input 5
+            RunDiagnosticForTEST(opCode);
         }
 
-        private void RunDiagnosticForTEST()
+
+        private void RunDiagnosticForTEST(int[] opCode)
         {
-            var opCode = ReadCsv("Day5.txt");
             _computer.FeedAdvancedOpCode(opCode);
         }
     }

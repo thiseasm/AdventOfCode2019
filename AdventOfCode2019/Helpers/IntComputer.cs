@@ -46,15 +46,30 @@ namespace AdventOfCode2019.Helpers
         private static int CalculateParameters(int currentPosition, IReadOnlyList<int> command, int[] opCode, int[] parameters)
         {
             var nextPosition = currentPosition;
-            if (command[0] == 1 || command[0] == 2)
+            var typeOfOperation = command[0];
+            if (typeOfOperation == 1 || typeOfOperation == 2)
             {
                 Array.ConstrainedCopy(opCode, currentPosition, parameters, 0, 4);
                 nextPosition += 4;
             }
-            else
+            else if(typeOfOperation == 3 || typeOfOperation == 4)
             {
                 Array.ConstrainedCopy(opCode, currentPosition, parameters, 0, 2);
                 nextPosition += 2;
+            }
+            else
+            {
+                if (typeOfOperation == 5 || typeOfOperation == 6)
+                {
+                    Array.ConstrainedCopy(opCode, currentPosition + 1, parameters, 0, 2);
+                    nextPosition = ExecuteLogicOperators(command, parameters, opCode) ?? nextPosition + 3;
+                }
+                else
+                {
+                    Array.ConstrainedCopy(opCode, currentPosition + 1, parameters, 0, 3);
+                    ExecuteLogicOperators(command, parameters, opCode);
+                    nextPosition += 4;
+                }
             }
 
             return nextPosition;
@@ -85,22 +100,54 @@ namespace AdventOfCode2019.Helpers
                     opCode[resultPosition] = input;
                     break;
                 }
-                default:
+                case 4:
                 {
-                    if (command[0] == 4)
-                    {
-                        var resultPosition = command[1] == 1 ? currentPosition += 1 : parameters[1];
-                        Console.Write($"Output of Command [4] is : {opCode[resultPosition]}" + Environment.NewLine);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid command detected.");
-                    }
-
+                    var resultPosition = command[1] == 1 ? currentPosition += 1 : parameters[1];
+                    Console.Write($"Output of Command [4] is : {opCode[resultPosition]}" + Environment.NewLine);
                     break;
                 }
             }
         }
+
+        private static int? ExecuteLogicOperators(IReadOnlyList<int> command, IReadOnlyList<int> parameters, IList<int> opCode)
+        {
+            switch (command[0])
+            {
+                case 5:
+                    var nonZeroValue = FindParameter(command[1], parameters[0], opCode);
+                    if (nonZeroValue != 0)
+                        return command[2] == 1 ? parameters[1] : opCode[parameters[1]];
+                    else
+                        return null;
+                case 6 when parameters[0] == 0:
+                    var zeroValue = FindParameter(command[1], parameters[0], opCode);
+                    if (zeroValue == 0)
+                        return command[2] == 1 ? parameters[1] : opCode[parameters[1]];
+                    else
+                        return null;
+                case 7:
+                    var operand1 = FindParameter(command[1], parameters[0], opCode);
+                    var operand2 = FindParameter(command[2], parameters[1], opCode);
+                    var resultPos = FindParameter(command[3], parameters[2], opCode);
+                    opCode[resultPos] = operand1 < operand2 ? 1 : 0;
+                    return null;
+                case 8:
+                    var operand3 = FindParameter(command[1], parameters[0], opCode);
+                    var operand4 = FindParameter(command[2], parameters[1], opCode);
+                    var resultPosit = FindParameter(command[3], parameters[2], opCode);
+                    opCode[resultPosit] = operand3 == operand4 ? 1 : 0;
+                    return null;
+                default:
+                    Console.WriteLine("Invalid command submitted to the IntComputer");
+                    return null;
+            }
+        }
+
+        //Opcode 5 is jump-if-true: if the first parameter is non-zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
+        //Opcode 6 is jump-if-false: if the first parameter is zero, it sets the instruction pointer to the value from the second parameter. Otherwise, it does nothing.
+        //Opcode 7 is less than: if the first parameter is less than the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0.
+        //Opcode 8 is equals: if the first parameter is equal to the second parameter, it stores 1 in the position given by the third parameter. Otherwise, it stores 0
+
 
         private static int RequestUserInput()
         {
@@ -115,7 +162,7 @@ namespace AdventOfCode2019.Helpers
             return input;
         }
 
-        private static int Multiply(IReadOnlyList<int> command, int[] opCode, IReadOnlyList<int> parameters)
+        private static int Multiply(IReadOnlyList<int> command, IReadOnlyList<int> opCode, IReadOnlyList<int> parameters)
         {
             var operand1 = FindParameter(command[1], parameters[1], opCode);
             var operand2 = FindParameter(command[2], parameters[2], opCode);
@@ -132,6 +179,11 @@ namespace AdventOfCode2019.Helpers
         }
 
         private static int FindParameter(int mode,int parameter, IReadOnlyList<int> opCode)
+        {
+            return mode == 1 ? parameter : opCode[parameter];
+        }
+
+        private static int FindParameter(int mode,int parameter, IList<int> opCode)
         {
             return mode == 1 ? parameter : opCode[parameter];
         }
