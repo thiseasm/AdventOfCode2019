@@ -9,14 +9,12 @@ namespace AdventOfCode2019.Challenges
         public override void Start()
         {
             var opCode = ReadCsv("Day5.txt");
-            // TEST needs input 1
-            RunDiagnosticForTEST(opCode);
-            // Thermal radiators require input 5
-            RunDiagnosticForTEST(opCode);
+            Console.WriteLine("Press [1] to run Diagnostics or [5] to extend the Thermal Radiators");
+            RunTEST(opCode);
         }
 
 
-        private void RunDiagnosticForTEST(int[] opCode)
+        private static void RunTEST(int[] opCode)
         {
             _computer.FeedAdvancedOpCode(opCode);
         }
