@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 
 namespace AdventOfCode2019.Helpers
 {
@@ -7,6 +8,8 @@ namespace AdventOfCode2019.Helpers
     {
         private static IntComputer _instance;
         private static readonly object _padlock = new object();
+        private static int _inputIndex;
+        private static int[] _inputs;
 
         private IntComputer()
         {
@@ -23,24 +26,42 @@ namespace AdventOfCode2019.Helpers
             }
         }
 
-        public int FeedAdvancedOpCode(int[] opCode)
+        public void SetInputs(int[] inputs)
+        {
+            _inputs = inputs;
+            _inputIndex = 0;
+        }
+
+        public void SetInput(int input)
+        {
+            _inputs  = new[] {input};
+            _inputIndex = 0;
+        }
+
+        //public int[] FeedIntComputerWithReturn(int[] opCode)
+        //{
+
+        //} 
+
+        public int FeedIntComputerV2(int[] opCode)
         {
             var currentPosition = 0;
             var command = DecodeCommand(opCode[currentPosition]);
+            var output = 0;
 
             while (command[0] != 99)
             {
                 var parameters = new int[4];
                 var nextPosition = CalculateParameters(currentPosition, command, opCode, parameters);
 
-                ExecuteCommand(opCode, command, parameters, currentPosition);
+                output = ExecuteCommand(opCode, command, parameters, currentPosition);
 
                 currentPosition = nextPosition;
                 command = DecodeCommand(opCode[currentPosition]);
 
             } 
 
-            return opCode[0];
+            return output;
         }
 
         private static int CalculateParameters(int currentPosition, IReadOnlyList<int> command, int[] opCode, int[] parameters)
@@ -78,7 +99,7 @@ namespace AdventOfCode2019.Helpers
             return nextPosition;
         }
 
-        private static void ExecuteCommand(int[] opCode, IReadOnlyList<int> command, IReadOnlyList<int> parameters, int currentPosition)
+        private static int ExecuteCommand(int[] opCode, IReadOnlyList<int> command, IReadOnlyList<int> parameters, int currentPosition)
         {
             switch (command[0])
             {
@@ -98,18 +119,20 @@ namespace AdventOfCode2019.Helpers
                 }
                 case 3:
                 {
-                    var input = RequestUserInput();
                     var resultPosition = command[1] == 1 ? currentPosition += 1 : parameters[1];
-                    opCode[resultPosition] = input;
+                    opCode[resultPosition] = _inputs[_inputIndex];
+                    if (_inputIndex < _inputs.Length - 1) _inputIndex++;
                     break;
                 }
                 case 4:
                 {
                     var resultPosition = command[1] == 1 ? currentPosition += 1 : parameters[1];
-                    Console.Write($"Output of Command [4] is : {opCode[resultPosition]}" + Environment.NewLine);
-                    break;
+                    return opCode[resultPosition];
+                    //Console.Write($"Output of Command [4] is : {opCode[resultPosition]}" + Environment.NewLine);
                 }
             }
+
+            return 0;
         }
 
         private static void ExecuteLogicOperators(IReadOnlyList<int> command, IReadOnlyList<int> parameters, IList<int> opCode)
@@ -144,19 +167,6 @@ namespace AdventOfCode2019.Helpers
             }
 
             return null;
-        }
-
-        private static int RequestUserInput()
-        {
-            var input = 0;
-            var isInteger = false;
-            while (!isInteger)
-            {
-                Console.Write("Please provide a valid input for the IntComputer:");
-                var inputRaw = Console.ReadLine();
-                isInteger = int.TryParse(inputRaw, out input);
-            }
-            return input;
         }
 
         private static int Multiply(IReadOnlyList<int> command, IReadOnlyList<int> opCode, IReadOnlyList<int> parameters)

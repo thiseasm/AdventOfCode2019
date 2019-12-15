@@ -5,18 +5,28 @@ namespace AdventOfCode2019.Challenges
 {
     public class Day5 : Day
     {
-        private static IntComputer _computer = IntComputer.Instance;
+        private static readonly IntComputer _computer = IntComputer.Instance;
         public override void Start()
         {
+            RunTEST();
+            ExtendThermalRadiators();
+        }
+
+        private void ExtendThermalRadiators()
+        {
             var opCode = ReadCsv("Day5.txt");
-            Console.WriteLine("Press [1] to run Diagnostics or [5] to extend the Thermal Radiators");
-            RunTEST(opCode);
+            _computer.SetInput(5);
+            var result = _computer.FeedIntComputerV2(opCode);
+            Console.WriteLine($"Extending the Thermal Radiators returned: {result}.");
         }
 
 
-        private static void RunTEST(int[] opCode)
+        private void RunTEST()
         {
-            _computer.FeedAdvancedOpCode(opCode);
+            var opCode = ReadCsv("Day5.txt");
+            _computer.SetInput(1);
+            var result = _computer.FeedIntComputerV2(opCode);
+            Console.WriteLine($"Running TEST diagnostics returned: {result}.");
         }
     }
 }
