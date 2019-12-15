@@ -20,14 +20,22 @@ namespace AdventOfCode2019.Challenges
             var phaseCombinations = GetPermutations(phaseSettings, phaseSettings.Length).ToArray();
 
             var maximumOutput = 0;
+
             foreach (var combination in phaseCombinations)
             {
-                foreach (var phase in combination)
+                var outputSignal = 0;
+                foreach (var phase in combination.ToArray())
                 {
-                    
+                    var opCode = ReadCsv("Day7.txt");
+                    _computer.SetInputs(new [] {phase, outputSignal});
+                    outputSignal = _computer.FeedIntComputerV2(opCode);
                 }
 
+                if (outputSignal > maximumOutput) maximumOutput = outputSignal;
+
             }
+
+            Console.WriteLine($"The highest signal that can be sent to the thrusters is: {maximumOutput}.");
 
         }
 

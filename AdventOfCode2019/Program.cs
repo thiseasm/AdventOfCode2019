@@ -18,7 +18,7 @@ namespace AdventOfCode2019
         }
         private static Day CalculateDay()
         {
-            var date = 5;
+            var date = 7;
             return date switch
             {
                 1 => (Day) new Day1(),

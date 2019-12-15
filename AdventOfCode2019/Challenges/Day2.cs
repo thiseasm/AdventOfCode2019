@@ -18,7 +18,7 @@ namespace AdventOfCode2019.Challenges
             opCode[1] = 12;
             opCode[2] = 2;
 
-            var result = _computer.FeedIntComputer(opCode);
+            var result = _computer.FeedIntComputerV2(opCode);
             Console.WriteLine($"The output of the IntComputer for the [1202 error] at position [0] is: {result}");
         }
 
@@ -34,7 +34,7 @@ namespace AdventOfCode2019.Challenges
                     var opCode = ReadCsv("Day2.txt");
                     opCode[1] = noun;
                     opCode[2] = verb;
-                    result = _computer.FeedIntComputer(opCode);
+                    result = _computer.FeedIntComputerV2(opCode);
                     if (result != expectedOutput) continue;
 
                     Console.WriteLine($"The noun and verb that produce output: [{expectedOutput}] are [noun]:{noun} and [verb]:{verb}");

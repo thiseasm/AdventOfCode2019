@@ -38,11 +38,6 @@ namespace AdventOfCode2019.Helpers
             _inputIndex = 0;
         }
 
-        //public int[] FeedIntComputerWithReturn(int[] opCode)
-        //{
-
-        //} 
-
         public int FeedIntComputerV2(int[] opCode)
         {
             var currentPosition = 0;
@@ -59,9 +54,9 @@ namespace AdventOfCode2019.Helpers
                 currentPosition = nextPosition;
                 command = DecodeCommand(opCode[currentPosition]);
 
-            } 
+            }
 
-            return output;
+            return output == 0 ? opCode[0] : output;
         }
 
         private static int CalculateParameters(int currentPosition, IReadOnlyList<int> command, int[] opCode, int[] parameters)
@@ -128,7 +123,6 @@ namespace AdventOfCode2019.Helpers
                 {
                     var resultPosition = command[1] == 1 ? currentPosition += 1 : parameters[1];
                     return opCode[resultPosition];
-                    //Console.Write($"Output of Command [4] is : {opCode[resultPosition]}" + Environment.NewLine);
                 }
             }
 
@@ -219,30 +213,6 @@ namespace AdventOfCode2019.Helpers
             
             parameters.AddRange(digits);
             return parameters;
-        }
-
-        public int FeedIntComputer(IList<int> opCode)
-        {
-            var currentPosition = 0;
-            var command = opCode[currentPosition];
-
-            while (command != 99)
-            {
-                var firstPosition = opCode[currentPosition + 1];
-                var secondPosition = opCode[currentPosition + 2];
-
-                var firstValue = opCode[firstPosition];
-                var secondValue = opCode[secondPosition];
-
-                var result = command == 1 ? Add(firstValue, secondValue) : Multiply(firstValue, secondValue);
-                var resultPosition = opCode[currentPosition + 3];
-                opCode[resultPosition] = result;
-
-                currentPosition += 4;
-                command = opCode[currentPosition];
-            }
-
-            return opCode[0];
         }
 
         private static int Add(int number1, int number2) { return number1 + number2; }
